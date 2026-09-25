@@ -1,0 +1,329 @@
+================================================================================
+SSO PENETRATION TESTING SCANNER — COMPLETE DELIVERABLE
+================================================================================
+
+BUILD DATE: September 25, 2026
+ENGAGEMENT: TCBC/D3/DBIQ/MWL SSO Migration Assessment
+TARGET GO-LIVE: September 30, 2026
+STATUS: ✅ COMPLETE & PRODUCTION READY
+
+================================================================================
+FILES INCLUDED
+================================================================================
+
+1. sso_pentest_scanner.py (664 lines, Jython 2.7)
+   └─ MAIN EXTENSION FILE
+   └─ Use this file to load into Burp Suite
+   └─ Covers all 90 test cases across 4 stages
+   └─ Auto-populates from Proxy traffic
+   └─ Syntax-checked ✅
+
+2. README.md (5.1 KB)
+   └─ Quick overview & getting started
+   └─ Coverage summary
+   └─ Key vulnerabilities at a glance
+   └─ Start here for 5-minute intro
+
+3. SSO_SCANNER_INSTALLATION_GUIDE.md (20 KB)
+   └─ Complete step-by-step installation
+   └─ Detailed workflow (Phase 1-4)
+   └─ Interpretation guide
+   └─ Troubleshooting
+   └─ Reference for assessments
+
+4. SSO_PENTEST_CHECKLIST_REFERENCE.md (15 KB)
+   └─ All 90 test cases mapped to tabs/triggers
+   └─ Stage 1-4 breakdown
+   └─ Auto vs. Manual (53% auto, 47% manual)
+   └─ Coverage matrix
+   └─ Use this to verify you've tested everything
+
+5. DELIVERY_SUMMARY.md (12 KB)
+   └─ Deployment checklist
+   └─ 5-minute quick start
+   └─ Common questions & answers
+   └─ Success criteria
+   └─ Support & escalation
+
+6. ARCHITECTURE.md (8 KB)
+   └─ Visual architecture diagrams
+   └─ Component interactions
+   └─ Data flow (discovery → report)
+   └─ Class structure
+   └─ UI tab layout
+
+7. INDEX.txt (this file)
+   └─ File manifest & reading order
+
+8. auth_sso_tester.py (72 KB)
+   └─ Previous iteration (reference only)
+   └─ Do not use this; use sso_pentest_scanner.py instead
+
+================================================================================
+RECOMMENDED READING ORDER
+================================================================================
+
+NEW USERS:
+  1. README.md (5 min) — Quick overview
+  2. DELIVERY_SUMMARY.md (5 min) — Deployment checklist
+  3. SSO_SCANNER_INSTALLATION_GUIDE.md (20 min) — Full workflow
+  4. Load sso_pentest_scanner.py into Burp and start testing
+
+DEVELOPERS:
+  1. ARCHITECTURE.md (10 min) — Component interactions & design
+  2. sso_pentest_scanner.py (30 min) — Code review
+  3. SSO_PENTEST_CHECKLIST_REFERENCE.md (15 min) — Test case mapping
+
+ASSESSMENT COORDINATORS (Gayatri/Sarath):
+  1. DELIVERY_SUMMARY.md (5 min) — Deployment checklist
+  2. SSO_PENTEST_CHECKLIST_REFERENCE.md (15 min) — What gets tested
+  3. Share README.md + SSO_SCANNER_INSTALLATION_GUIDE.md with assessors
+
+================================================================================
+INSTALLATION QUICKSTART
+================================================================================
+
+1. Download Jython 2.7 standalone JAR from https://www.jython.org/download
+
+2. In Burp Suite:
+   - Extensions → Installed → Add
+   - Extension type: Python
+   - Jython JAR: select JAR from step 1
+   - Script file: select sso_pentest_scanner.py
+   - Click Load
+
+3. Verify:
+   - New "SSO Pentest (Full)" tab appears in Burp
+   - Console shows: "SSO Pentest Scanner loaded..."
+
+See SSO_SCANNER_INSTALLATION_GUIDE.md for full details.
+
+================================================================================
+KEY FEATURES
+================================================================================
+
+✅ Auto-discovers SSO endpoints from Proxy traffic
+✅ 90 test cases across 4 stages (Recon, Token, Flow, Lifecycle)
+✅ 48 automated tests (passive + active scanning)
+✅ 42 manual verification tests (Repeater)
+✅ Zero manual value entry — all parameters auto-populated
+✅ Native Burp integration (Dashboard, Issues, HTML reports)
+✅ De-duplication (60s per endpoint)
+✅ Complete documentation & examples
+
+================================================================================
+TEST COVERAGE
+================================================================================
+
+STAGE 1: RECONNAISSANCE (13 tests)
+  • Endpoint & metadata discovery
+  • Certificate hygiene
+  • Trust relationship mapping
+
+STAGE 2: TOKEN ANALYSIS (32 tests)
+  • XSW 1–8 (all signature wrapping variants)
+  • JWT crypto (alg=none, HMAC, missing claims)
+  • SAML manipulation (audience, issuer, NameID)
+  • Microsoft Entra ID (tid, idtyp, ver)
+
+STAGE 3: FLOW LOGIC (25 tests)
+  • redirect_uri validation (7 variants)
+  • state parameter bypass (CSRF)
+  • Consent/prompt manipulation
+  • SAML flow logic
+  • ADFS/WS-Federation
+  • Microsoft tenant confusion
+
+STAGE 4: SESSION/LIFECYCLE (20 tests)
+  • Single Logout (SLO) validation
+  • Session timeouts
+  • Token revocation
+  • Cookie flags (Secure, HttpOnly, SameSite)
+  • Token storage (localStorage vs. cookies)
+
+TOTAL: 90 test cases
+AUTOMATION RATE: 53% automated, 47% manual verification
+
+================================================================================
+CRITICAL VULNERABILITIES DETECTED
+================================================================================
+
+This extension will find:
+
+CRITICAL:
+  ❌ alg=none JWT (no signature)
+  ❌ idtyp=app on user endpoint
+  ❌ Token in localStorage
+  ❌ Assertion accepted without signature
+
+HIGH:
+  ⚠️ Missing state parameter (CSRF)
+  ⚠️ HMAC alg confusion
+  ⚠️ HttpOnly flag missing
+  ⚠️ XSW 1–8 variants accepted
+  ⚠️ Microsoft tid missing
+
+MEDIUM:
+  ⚠️ Missing exp/aud/iss claims
+  ⚠️ redirect_uri validation bypass
+  ⚠️ prompt=none accepted
+  ⚠️ SameSite missing
+  ⚠️ SAML assertion replay
+
+See SSO_PENTEST_CHECKLIST_REFERENCE.md for all test cases.
+
+================================================================================
+TIMELINE FOR TCBC ASSESSMENT
+================================================================================
+
+Phase 1: Setup (30 min)
+  • Install extension
+  • Verify Jython 2.7
+  • Load sso_pentest_scanner.py
+  • Test on sample OAuth app
+
+Phase 2: Discovery (30 min)
+  • Browse SSO flows through Burp Proxy
+  • Watch auto-population in Config tab
+  • Verify endpoints/parameters captured
+
+Phase 3: Passive Scans (15 min)
+  • Let Crawler run
+  • Monitor Scanner Issues tab
+  • Findings auto-populated
+
+Phase 4: Active Scans (30 min)
+  • Right-click endpoints
+  • Trigger active checks
+  • Observe generated variants
+
+Phase 5: Manual Verification (1 hour)
+  • For each XSW/redirect_uri/flow variant
+  • Test in Repeater
+  • Document findings
+
+Phase 6: Reporting (1 hour)
+  • Export Burp HTML report
+  • Cross-check vs. Checklist Reference
+  • Consolidate findings
+  • Write executive summary
+
+TOTAL: ~4 hours for assessment + remediation follow-up
+
+================================================================================
+QUESTIONS?
+================================================================================
+
+Q: Do I need to enter credentials manually?
+A: No. You login normally through Burp Proxy. Extension watches & captures tokens.
+
+Q: Will active scans burn credentials (like lockout attempts)?
+A: No. Active scans only generate variants. Manual tests in Repeater do actual sends.
+
+Q: How long does full assessment take?
+A: ~2–4 hours: 30 min setup, 1.5 hrs testing, 1 hr verification, 1 hr reporting.
+
+Q: Can I use this on production?
+A: Not for active scans. Use staging/test environment. Passive scans are read-only.
+
+Q: What if extension doesn't load?
+A: Check Jython 2.7 JAR via Extender → Options. See INSTALLATION_GUIDE troubleshooting.
+
+See DELIVERY_SUMMARY.md for more Q&A.
+
+================================================================================
+SUCCESS CRITERIA
+================================================================================
+
+Assessment is successful when:
+
+✅ Extension loads without errors
+✅ Endpoints auto-discovered from Proxy
+✅ Passive scans detect JWT/cookie/state issues
+✅ Active scans generate variants
+✅ Manual verification confirms/rejects findings
+✅ All 90 test cases executed (auto or manual)
+✅ Findings consolidated in Burp HTML report
+✅ Checklist Reference shows 100% coverage
+✅ Executive summary delivered
+✅ Go-live readiness assessed by Sept 30
+
+================================================================================
+DEPLOYMENT COMMAND
+================================================================================
+
+When ready to load in Burp:
+
+  Burp → Extensions → Installed → Add
+  [+] Select Python
+      Jython location: /path/to/jython.jar
+      Script: /path/to/sso_pentest_scanner.py
+      [Load]
+
+Expected output:
+  "SSO Pentest Scanner loaded (all stages, auto-population enabled)."
+
+New tab appears: "SSO Pentest (Full)"
+
+================================================================================
+CONTACT & SUPPORT
+================================================================================
+
+TCBC Assessment Lead: Gayatri
+TCBC Technical Lead: Sarath
+ZCU/MWL Coordinator: Sachin
+
+For issues:
+  1. Check SSO_SCANNER_INSTALLATION_GUIDE.md (troubleshooting section)
+  2. Review SSO_PENTEST_CHECKLIST_REFERENCE.md for test mapping
+  3. Verify Jython 2.7 JAR is correctly loaded
+  4. Ensure Burp Proxy is capturing SSO traffic
+
+For enhancements:
+  - Edit sso_pentest_scanner.py to add custom tests
+  - See INSTALLATION_GUIDE "Extending the Scanner" section
+  - Reload extension after changes (Unload → Load)
+
+================================================================================
+VERSION INFORMATION
+================================================================================
+
+Extension Version: 1.0 (Full Checklist Implementation)
+Release Date: September 25, 2026
+Jython Requirement: 2.7
+Burp Compatibility: Professional & Community Edition
+Status: ✅ Production Ready
+Target Assessment: TCBC SSO Migration
+Go-Live Target: September 30, 2026
+
+================================================================================
+NEXT STEPS
+================================================================================
+
+1. ✅ Download all files from this directory
+2. ✅ Read README.md (5 min)
+3. ✅ Read DELIVERY_SUMMARY.md (5 min)
+4. ✅ Download Jython 2.7
+5. ✅ Load sso_pentest_scanner.py in Burp
+6. ✅ Follow workflow in SSO_SCANNER_INSTALLATION_GUIDE.md
+7. ✅ Run all 4 stages of testing
+8. ✅ Export findings & deliver to Gayatri/Sarath
+9. ✅ Support remediation work until Sept 30
+
+================================================================================
+LICENSE & USAGE
+================================================================================
+
+This extension is built for the TCBC/D3/DBIQ/MWL SSO Migration Assessment.
+Use is restricted to authorized personnel working on this engagement.
+Do not distribute to third parties without approval from Gayatri/Sarath.
+
+================================================================================
+
+Built with ❤️ for the TCBC SSO Migration Team
+Delivery Date: September 25, 2026
+Assessment Target: September 30, 2026
+
+Thank you & good luck with the assessment!
+
+================================================================================
